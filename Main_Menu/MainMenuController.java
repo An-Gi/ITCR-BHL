@@ -6,8 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainMenuController {
 
-    @GetMapping("/")
+    @GetMapping("/Menu")
     public String showMainMenu() {
         return "MainMenu"; // Esto buscará un archivo llamado "index.html" en el directorio templates
     }
+
+    @GetMapping("/Collections")
+    public String showCollections() {
+        return "Collections"; // Esto buscará un archivo llamado "index.html" en el directorio templates
+    }
+
 }
