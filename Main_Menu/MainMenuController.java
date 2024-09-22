@@ -8,12 +8,17 @@ public class MainMenuController {
 
     @GetMapping("/Menu")
     public String showMainMenu() {
-        return "MainMenu"; // Esto buscará un archivo llamado "index.html" en el directorio templates
+        return "MainMenu";
     }
 
     @GetMapping("/Collections")
     public String showCollections() {
-        return "Collections"; // Esto buscará un archivo llamado "index.html" en el directorio templates
+        return "Collections";
+    }
+
+    @GetMapping("/error")
+    public String show404() {
+        return "index";
     }
 
 }

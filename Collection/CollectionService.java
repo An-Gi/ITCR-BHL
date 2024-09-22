@@ -12,4 +12,13 @@ public class CollectionService {
     public List<Collection> getAllCollections() {
         return collectionRepository.findAll();
     }
+
+    /*public Collection getCollectionById(Long id){
+        Optional<Collection> collectionOpt = collectionRepository.findById(id);
+        return collectionOpt.orElse(null);
+    }*/
+
+    public Optional<Collection> getCollectionById(Long id){
+        return collectionRepository.findById(id);
+    }
 }

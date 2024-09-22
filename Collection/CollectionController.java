@@ -1,6 +1,7 @@
 package com.example.demo.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
@@ -15,4 +16,10 @@ public class CollectionController {
     public List<Collection> getAllCollections() {
         return collectionService.getAllCollections();
     }
+
+    @GetMapping("/{id}")
+    public Collection getCollection(@PathVariable("id") Long id) {
+        return collectionService.getCollectionById(id).get();
+    }
+
 }
