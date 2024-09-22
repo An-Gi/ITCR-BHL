@@ -1,5 +1,6 @@
 package com.example.demo.Publication_Collection;
 
+import com.example.demo.Author.Author;
 import com.example.demo.Collection.Collection;
 import com.example.demo.Collection.CollectionService;
 import com.example.demo.publication.Publication;
