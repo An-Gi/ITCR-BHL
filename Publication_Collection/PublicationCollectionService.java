@@ -23,5 +23,7 @@ public class PublicationCollectionService {
         return publicationCollectionRepository.findByCollection(collection);
     }
 
-
+    public List<PublicationCollection>collectionByID(Publication publication){
+        return publicationCollectionRepository.findByPublication(publication);
+    }
 }

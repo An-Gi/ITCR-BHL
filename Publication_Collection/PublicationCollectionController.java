@@ -3,6 +3,8 @@ package com.example.demo.Publication_Collection;
 import com.example.demo.Author.Author;
 import com.example.demo.Collection.Collection;
 import com.example.demo.Collection.CollectionService;
+import com.example.demo.Publication_Author.PublicationAuthor;
+import com.example.demo.Publication_Author.PublicationAuthorService;
 import com.example.demo.publication.Publication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,9 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/publication-collection")
@@ -26,6 +26,9 @@ public class PublicationCollectionController {
     @Autowired
     private CollectionService collectionService;
 
+    @Autowired
+    private PublicationAuthorService publicationAuthorService;
+
     @GetMapping
     public List<PublicationCollection> getAllPublicationCollection() {
         return publicationCollectionService.getAllPublicationCollection();
@@ -34,9 +37,28 @@ public class PublicationCollectionController {
 
 
     @GetMapping("/{id}")
-    public String showById(@PathVariable("id") Long id, Model model){
+    public String showById(@PathVariable("id") Long id, Model conjuntoDatos){
         Collection collection = collectionService.getCollectionById(id).get();
-        model.addAttribute("PublicationCollection", publicationCollectionService.publiByID(collection));
+        List<PublicationCollection> publicaciones = publicationCollectionService.publiByID(collection);
+        conjuntoDatos.addAttribute("PublicationCollection", publicaciones);
+
+        // Crear un mapa para almacenar los autores por cada publicación
+        Map<Integer, List<PublicationAuthor>> autoresMap = new HashMap<>();
+
+        Map<Integer, List<PublicationCollection>> collectionMap = new HashMap<>();
+
+
+        for (PublicationCollection pubCol : publicaciones) {
+            List<PublicationAuthor> autores = publicationAuthorService.authorById(pubCol.getPublication());
+            autoresMap.put(pubCol.getPublication().getIdPost(), autores);
+            List<PublicationCollection> collections = publicationCollectionService.collectionByID(pubCol.getPublication());
+            collectionMap.put(pubCol.getPublication().getIdPost(), collections);
+        }
+
+        conjuntoDatos.addAttribute("AutoresMap", autoresMap);
+
+        conjuntoDatos.addAttribute("ColletionMap", collectionMap);
+
         return "PublicationsCollection";
     }
 

@@ -44,5 +44,9 @@ public class PublicationService {
         publicationRepository.save(publication); // Guardar los cambios en la base de datos
     }
 
+    public Publication getByID(int id){
+        return publicationRepository.findById(id).get();
+    }
+
 
 }

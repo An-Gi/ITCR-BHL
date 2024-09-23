@@ -23,11 +23,5 @@ public class ShowCollection {
         return "Collections"; // Nombre de la plantilla HTML (collections.html)
     }
 
-    /*@GetMapping("/Collection/{id}")
-    public String searchCollection(@PathVariable("id") Long id, Model model) {
-        Collection collectionById = collectionService.getCollectionById(id);
-        model.addAttribute("Publication", collectionById);
-        return "PublicationsCollection";  // La vista que renderiza los datos
-    }*/
 
 }
