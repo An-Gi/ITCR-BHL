@@ -1,6 +1,6 @@
 package com.example.demo.Publication_Collection;
 
-import com.example.demo.publication.Publication;
+import com.example.demo.Publication.Publication;
 import com.example.demo.Collection.Collection;
 import jakarta.persistence.*;
 import java.io.Serializable;

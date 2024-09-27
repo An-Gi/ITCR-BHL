@@ -1,8 +1,5 @@
 package com.example.demo.Author;
-import com.example.demo.publication.Publication;
 import jakarta.persistence.*;
-
-import java.util.List;
 
 @Entity
 @Table(name = "author")

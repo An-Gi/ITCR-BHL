@@ -1,7 +1,7 @@
 package com.example.demo.Publication_Author;
 
 import com.example.demo.Author.Author;
-import com.example.demo.publication.Publication;
+import com.example.demo.Publication.Publication;
 import jakarta.persistence.*;
 import java.io.Serializable;
 

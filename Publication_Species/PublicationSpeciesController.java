@@ -34,4 +34,5 @@ public class PublicationSpeciesController {
         model.addAttribute("publicaciones", publicationSpeciesService.getBySpecies(species));
         return "PublicationSpecies";
     }
+
 }

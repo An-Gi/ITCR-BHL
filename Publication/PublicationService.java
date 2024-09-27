@@ -1,6 +1,5 @@
-package com.example.demo.publication;
+package com.example.demo.Publication;
 
-import com.example.demo.student.Student;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,5 +47,8 @@ public class PublicationService {
         return publicationRepository.findById(id).get();
     }
 
+    public List<Publication> getByTitle(String title){
+        return publicationRepository.findByTitleLike(title);
+    }
 
 }

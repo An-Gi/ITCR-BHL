@@ -1,12 +1,11 @@
-package com.example.demo.publication;
+package com.example.demo.Publication;
 
-import com.example.demo.student.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/publications")
+@RequestMapping("/publication")
 public class PublicationController {
 
     @Autowired
@@ -20,11 +19,6 @@ public class PublicationController {
     @PostMapping
     public void newPublication(@RequestBody Publication publication){
         publicationService.addNewPublication(publication);
-    }
-
-    @DeleteMapping(path = "{idPost}")
-    public void deletePublication(@PathVariable("idPost") Integer id){
-        publicationService.deletePublication(id);
     }
 
     @PutMapping(path = "/id/{idPost}")

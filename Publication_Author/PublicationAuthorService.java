@@ -1,8 +1,6 @@
 package com.example.demo.Publication_Author;
 
-import com.example.demo.Collection.Collection;
-import com.example.demo.Publication_Collection.PublicationCollection;
-import com.example.demo.publication.Publication;
+import com.example.demo.Publication.Publication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.*;

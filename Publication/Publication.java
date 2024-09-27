@@ -1,4 +1,4 @@
-package com.example.demo.publication;
+package com.example.demo.Publication;
 
 import com.example.demo.Institution.Institution;
 import jakarta.persistence.*;
@@ -17,6 +17,8 @@ public class Publication {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idPost;
 
+    @Setter
+    @Getter
     private String title;
 
     private LocalDate postdate;
@@ -32,4 +34,18 @@ public class Publication {
     @ManyToOne
     @JoinColumn(name = "ID_Institution", referencedColumnName = "ID_Institution", foreignKey = @ForeignKey(name = "fk_institution"))
     private Institution institution;
+
+    public Publication(String title, String postdate, String publisherMagazine,String doi,String isbn, String publicationcountry, Institution ID_Institution) {
+        this.title = title;
+        this.postdate = LocalDate.parse(postdate);
+        this.publisherMagazine = publisherMagazine;
+        this.isbn =isbn;
+        this.doi = doi;
+        this.publicationcountry = publicationcountry;
+        this.institution = ID_Institution;
+    }
+
+    public Publication() {
+    }
+
 }

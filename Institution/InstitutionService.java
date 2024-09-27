@@ -12,5 +12,9 @@ public class InstitutionService {
     public List<Institution> getAllInstitutions() {
         return institutionRepository.findAll();
     }
+
+    public Optional<Institution> getByID(int id){
+        return institutionRepository.findById(id);
+    }
 }
 
