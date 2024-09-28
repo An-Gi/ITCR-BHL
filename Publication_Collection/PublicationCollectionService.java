@@ -24,4 +24,15 @@ public class PublicationCollectionService {
     public List<PublicationCollection>collectionByID(Publication publication){
         return publicationCollectionRepository.findByPublication(publication);
     }
+
+    public void addNewPublicationCollection(Publication publication, Collection collection){
+        PublicationCollection publicationCollection = new PublicationCollection();
+        publicationCollection.setCollection(collection);
+        publicationCollection.setPublication(publication);
+        publicationCollectionRepository.save(publicationCollection);
+    }
+
+    public void deletePublicationCollection(Publication publication){
+        publicationCollectionRepository.deleteByPublication(publication);
+    }
 }

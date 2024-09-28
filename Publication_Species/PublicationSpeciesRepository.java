@@ -18,5 +18,7 @@ public interface PublicationSpeciesRepository extends JpaRepository<PublicationS
 
     @Query("SELECT PS FROM PublicationSpecies PS WHERE PS.publication = :publications")
     List<PublicationSpecies> findByPublications(@Param("publications") Publication publication);
+
+    void deleteByPublication(Publication publication);
 }
 

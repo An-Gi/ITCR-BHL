@@ -11,4 +11,6 @@ import java.util.List;
 public interface PublicationAuthorRepository extends JpaRepository<PublicationAuthor, PublicationAuthorId> {
     @Query("SELECT pa FROM PublicationAuthor pa WHERE pa.publication = :publication")
     List<PublicationAuthor> findByPublication(@Param("publication") Publication publication);
+
+    void deleteByPublication(Publication publication);
 }

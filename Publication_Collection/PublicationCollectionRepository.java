@@ -16,4 +16,6 @@ public interface PublicationCollectionRepository extends JpaRepository<Publicati
     @Query("SELECT pc FROM PublicationCollection pc WHERE pc.publication = :publication")
     List<PublicationCollection> findByPublication(@Param("publication") Publication publication);
 
+    void deleteByPublication(Publication publication);
+
 }

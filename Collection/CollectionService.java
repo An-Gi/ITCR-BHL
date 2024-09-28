@@ -21,4 +21,8 @@ public class CollectionService {
     public Optional<Collection> getCollectionById(Long id){
         return collectionRepository.findById(id);
     }
+
+    public Optional<Collection> getCollectionByName(String name){
+        return collectionRepository.findCollectionByName(name);
+    }
 }

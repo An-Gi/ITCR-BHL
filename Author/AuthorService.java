@@ -1,5 +1,6 @@
 package com.example.demo.Author;
 
+import com.example.demo.Collection.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -11,5 +12,13 @@ public class AuthorService {
 
     public List<Author> getAllAuthors() {
         return authorRepository.findAll();
+    }
+
+    public Optional<Author> getAuthorByID(int id){
+        return authorRepository.findAuthorByIdAuthor(id);
+    }
+
+    public Optional<Author> getAuthorByIdCard(int idCard){
+        return authorRepository.findByIdCard(idCard);
     }
 }

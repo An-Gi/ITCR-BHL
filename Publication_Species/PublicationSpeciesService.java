@@ -1,5 +1,7 @@
 package com.example.demo.Publication_Species;
 
+import com.example.demo.Author.Author;
+import com.example.demo.Publication_Author.PublicationAuthor;
 import com.example.demo.Species.Species;
 import com.example.demo.Publication.Publication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,4 +25,14 @@ public class PublicationSpeciesService {
         return publicationSpeciesRepository.findByPublications(publication);
     }
 
+    public void addNewPublicationSpecies(Publication publication, Species species){
+        PublicationSpecies publicationSpecies = new PublicationSpecies();
+        publicationSpecies.setSpecies(species);
+        publicationSpecies.setPublication(publication);
+        publicationSpeciesRepository.save(publicationSpecies);
+    }
+
+    public void deletePublicationSpecies(Publication publication){
+        publicationSpeciesRepository.deleteByPublication(publication);
+    }
 }
