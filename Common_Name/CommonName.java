@@ -8,6 +8,7 @@ import java.io.Serializable;
 @Table(name = "CommonName")
 public class CommonName implements Serializable {
 
+    //Atributos de la tabla "CommonName"
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idCommonName;

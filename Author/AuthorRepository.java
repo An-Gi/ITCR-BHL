@@ -7,8 +7,7 @@ import java.util.Optional;
 
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, Long> {
-
-    Optional<Author> findAuthorByIdAuthor(int id);
-
+    /*Método para encontrar un autor por número de cédula, le entra un int que representa
+     el número de cédula y devuelve un objeto "Author" si es que se encuentra.*/
     Optional<Author> findByIdCard(int idCard);
 }

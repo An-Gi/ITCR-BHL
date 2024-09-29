@@ -21,10 +21,15 @@ public class PublicationCollectionService {
         return publicationCollectionRepository.findByCollection(collection);
     }
 
-    public List<PublicationCollection>collectionByID(Publication publication){
+    /* Método para buscar por publicación, recibe un objeto de tipo "Publication"
+      y devuelve una lista de objetos de tipo "PublicationCollection".*/
+    public List<PublicationCollection>collectionByPublication(Publication publication){
         return publicationCollectionRepository.findByPublication(publication);
     }
 
+    /* Método para añadir una nueva relación "PublicationCollection",  recibe
+     dos objetos uno de tipo "Collection" y el otro "Publication" y no devuelve
+     nada".*/
     public void addNewPublicationCollection(Publication publication, Collection collection){
         PublicationCollection publicationCollection = new PublicationCollection();
         publicationCollection.setCollection(collection);
@@ -32,6 +37,8 @@ public class PublicationCollectionService {
         publicationCollectionRepository.save(publicationCollection);
     }
 
+    /* Método para eliminar una relación "PublicationCollection", recibe
+   un objeto de tipo "Publicaion" y no devuelve nada.*/
     public void deletePublicationCollection(Publication publication){
         publicationCollectionRepository.deleteByPublication(publication);
     }

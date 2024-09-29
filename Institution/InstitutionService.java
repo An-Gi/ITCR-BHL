@@ -8,11 +8,9 @@ public class InstitutionService {
 
     @Autowired
     private InstitutionRepository institutionRepository;
-
-    public List<Institution> getAllInstitutions() {
-        return institutionRepository.findAll();
-    }
-
+    /* Método para obtener una institución por id, recibe
+    un int que representa el id y devuelve un objeto de tipo
+    "Institution" si es que se encuentra.*/
     public Optional<Institution> getByID(int id){
         return institutionRepository.findById(id);
     }

@@ -12,13 +12,20 @@ import java.util.List;
 
 @Repository
 public interface PublicationSpeciesRepository extends JpaRepository<PublicationSpecies, Integer> {
-
+    /* Método para encontrar por especie, recibe un
+    objeto de tipo "Species" y devuelve una lista de
+     objetos de tipo "PublicationSpecies". */
     @Query("SELECT PS FROM PublicationSpecies PS WHERE PS.species = :species")
     List<PublicationSpecies> findBySpecies(@Param("species") Species species);
 
+    /* Método para encontrar por publicación, recibe un
+    objeto de tipo "Publication" y devuelve una lista de
+     objetos de tipo "PublicationCollection". */
     @Query("SELECT PS FROM PublicationSpecies PS WHERE PS.publication = :publications")
     List<PublicationSpecies> findByPublications(@Param("publications") Publication publication);
 
+    /* Método para eliminar por publicación, recibe
+   un objeto de tipo "Publication" y no devuelve nada. */
     void deleteByPublication(Publication publication);
 }
 

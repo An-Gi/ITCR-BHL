@@ -1,12 +1,17 @@
 package com.example.demo.Publication_Species;
 
+import lombok.Getter;
+import lombok.Setter;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Getter
+@Setter
 public class PublicationSpeciesId implements Serializable {
     private int publication;
     private int species;
 
+    //constructor del id de "publication_collection"
     public PublicationSpeciesId() {}
 
     public PublicationSpeciesId(int publication, int species) {

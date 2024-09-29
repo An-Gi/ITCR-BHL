@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "collection")
 public class Collection {
+    //Atributos de la tabla "Collection"
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idCollection;

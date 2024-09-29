@@ -10,14 +10,9 @@ public class AuthorService {
     @Autowired
     private AuthorRepository authorRepository;
 
-    public List<Author> getAllAuthors() {
-        return authorRepository.findAll();
-    }
-
-    public Optional<Author> getAuthorByID(int id){
-        return authorRepository.findAuthorByIdAuthor(id);
-    }
-
+    /*Método para obtener un autor por medio del número de cédula, le entra un int
+     que representa el número de cédula y devuelve un objeto de tipo "Author" si es
+     que se encuentra*/
     public Optional<Author> getAuthorByIdCard(int idCard){
         return authorRepository.findByIdCard(idCard);
     }

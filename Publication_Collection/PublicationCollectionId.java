@@ -1,35 +1,25 @@
 package com.example.demo.Publication_Collection;
 
+import lombok.Getter;
+import lombok.Setter;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Getter
+@Setter
 public class PublicationCollectionId implements Serializable{
     private int publication;
     private int collection;
 
     public PublicationCollectionId() {}
 
+    //constructor del id de "publication_collection"
     public PublicationCollectionId(int publication, int collection) {
         this.publication = publication;
         this.collection = collection;
     }
 
-    public int getPublication() {
-        return publication;
-    }
-
-    public void setPublication(int publication) {
-        this.publication = publication;
-    }
-
-    public int getCollection() {
-        return collection;
-    }
-
-    public void setCollection(int collection) {
-        this.collection = collection;
-    }
-
+    // método para verificar que el id sea único
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

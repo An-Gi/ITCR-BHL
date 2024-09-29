@@ -12,13 +12,10 @@ import java.time.LocalDate;
 @Setter
 @Table(name = "publication")
 public class Publication {
-
+    //Atributos de la tabla "Publication" y constructores.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idPost;
-
-    @Setter
-    @Getter
     private String title;
 
     private LocalDate postdate;

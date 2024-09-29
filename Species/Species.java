@@ -7,7 +7,7 @@ import com.example.demo.Gender.Gender;
 @Entity
 @Table(name = "Species")
 public class Species implements Serializable {
-
+    //Atributos de la tabla "Species"
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idSpecies;

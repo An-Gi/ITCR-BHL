@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "Gender")
 public class Gender {
-
+    // Atributos de la tabla "Gender"
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idGender;

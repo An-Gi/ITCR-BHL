@@ -13,13 +13,9 @@ public class SpeciesService {
     @Autowired
     private SpeciesRepository speciesRepository;
 
-    public List<Species> getAllSpecies() {
-        return speciesRepository.findAll();
-    }
-    @GetMapping("/{idSpecies}")
-    public Optional<Species> getSpeciesById(Integer id) {
-        return speciesRepository.findById(id);
-    }
+    /* Método para obtener una especie por medio de su nombre,
+    recibe un String que representa el nombre y devuelve una
+    lista de objetos de tipo "Species". */
     public List<Species> findByName(String name) {
         return speciesRepository.findByNameIgnoreCase(name);
     }

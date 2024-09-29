@@ -9,6 +9,9 @@ public class CollectionService {
     @Autowired
     private CollectionRepository collectionRepository;
 
+    /* Método para obtener todas las colecciones, no recibe
+    nada como parámetros y devuelve una lista de objetos de
+    tipo "Collection" */
     public List<Collection> getAllCollections() {
         return collectionRepository.findAll();
     }
@@ -22,6 +25,9 @@ public class CollectionService {
         return collectionRepository.findById(id);
     }
 
+    /* Método para obtener una colección por el nombre, recibe
+    un string que representa el nombre y devuelve un objeto de
+     tipo "Collection" si es que se encuentra.*/
     public Optional<Collection> getCollectionByName(String name){
         return collectionRepository.findCollectionByName(name);
     }

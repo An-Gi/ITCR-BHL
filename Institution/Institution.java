@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "institution")
 public class Institution {
-
+    //Atributos de la tabla "Institution"
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_Institution")

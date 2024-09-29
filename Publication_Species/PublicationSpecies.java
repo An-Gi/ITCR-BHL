@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Table(name = "Publication_Species")
 @IdClass(PublicationSpeciesId.class)
 public class PublicationSpecies implements Serializable {
-
+//Atributos de la tabla "Publication_Species"
     @Id
     @ManyToOne
     @JoinColumn(name = "ID_Publication", referencedColumnName = "idPost")
