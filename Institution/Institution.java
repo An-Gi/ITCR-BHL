@@ -1,6 +1,12 @@
 package com.example.demo.Institution;
+
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
+@Getter
+@Setter
 @Table(name = "institution")
 public class Institution {
     //Atributos de la tabla "Institution"
@@ -11,20 +17,4 @@ public class Institution {
 
     @Column(name = "Name", nullable = false)
     private String name;
-
-    public Integer getIdInstitution() {
-        return ID_Institution;
-    }
-
-    public void setIdInstitution(Integer ID_Institution) {
-        this.ID_Institution = ID_Institution;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

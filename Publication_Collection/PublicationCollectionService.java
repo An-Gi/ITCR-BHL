@@ -5,19 +5,16 @@ import com.example.demo.Publication.Publication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.*;
+
 @Service
 public class PublicationCollectionService {
-
-
 
     @Autowired
     private PublicationCollectionRepository publicationCollectionRepository;
 
-    public List<PublicationCollection> getAllPublicationCollection() {
-        return publicationCollectionRepository.findAll();
-    }
-
-    public List<PublicationCollection> publiByID(Collection collection){
+    /* Método para buscar por colección, recibe un objeto de tipo "Collection"
+      y devuelve una lista de objetos de tipo "PublicationCollection".*/
+    public List<PublicationCollection> publicationByCollection(Collection collection){
         return publicationCollectionRepository.findByCollection(collection);
     }
 

@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +17,6 @@ public interface PublicationRepository extends JpaRepository<Publication, Intege
     /* Método para buscar una publicación por el título, recibe un string que representa
     el título y devuelve un objeto de "Publication" si es que se encuentra.*/
     @Query("SELECT PN FROM Publication PN WHERE PN.title LIKE %:title%")
-    List<Publication> findByTitleLike(@Param("title") String title);
+    List<Publication> findByTitleLikeIgnoreCase(@Param("title") String title);
 
 }

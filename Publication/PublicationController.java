@@ -81,4 +81,129 @@ public class PublicationController {
         publicaciones.addAttribute("Publications", publicationService.getAllPublications());
         return "PublicationAdded";
     }
+
+    /* Método para mostrar todas las publicaciones.*/
+    @GetMapping
+    public String getAllPublications(Model model) {
+        model.addAttribute("Publications", publicationService.getAllPublications());
+        return "allPublications";
+    }
+
+    /* Método para eliminar una publicación, recibe un String que
+     representa el id de la publicación y devuelve un String */
+    @Transactional
+    @GetMapping("/publicationDeleted")
+    public String deletePublication(@RequestParam(value = "query", required = false, defaultValue = "") String query) {
+        if(!query.isEmpty()){
+            Publication publication = publicationService.getByID(Integer.parseInt(query));
+            publicationAuthorService.deletePublicationAuthor(publication); // se eliminan las relaciones con las tablas intermedias
+            publicationCollectionService.deletePublicationCollection(publication);
+            publicationSpeciesService.deletePublicationSpecies(publication);
+            publicationService.deletePublication(Integer.valueOf(query)); // se elimina la publicación
+        }
+        return "PublicationDeleted";
+    }
+
+    /* Método para obtener las publicaciones por medio de su título,
+    recibe un String que representa el título y un objeto de tipo "Model",
+    devuelve un String. */
+    @GetMapping("/byTitle")
+    public String getPublicationsByTitle(@RequestParam("query") String query, Model model) {
+        model.addAttribute("Publications", publicationService.getByTitle(query));
+        return "PublicationSearch";
+    }
+
+    /* Método para mostrar una publicación por su id, recibe un Integer que
+    representa como el id y un objeto de tipo "Model, devuelve un String."
+     */
+    @GetMapping("/{idPost}")
+    public String showPublication(@PathVariable("idPost") Integer id, Model model) {
+        Publication publication = publicationService.getByID(id); //se busca una publicación con su id
+        model.addAttribute("Publicacion", publication); // se pasa la info al modelo
+        model.addAttribute("Autores", publicationAuthorService.authorByPublication(publication));
+        model.addAttribute("Collections", publicationCollectionService.collectionByPublication(publication));
+        model.addAttribute("Species", publicationSpeciesService.speciesByPublication(publication));
+        return "Publication";
+    }
+    /* Método para redirigir al usuario si desea editar
+    una publicación,recibe un string que
+    representa el id de la publicación y un
+    objeto de tipo "Model", devuelve un String. */
+    @GetMapping("/updatingData")
+    public String requestNewData(@RequestParam(value = "query", required = false, defaultValue = "") String query, Model model){
+        Publication publication = publicationService.getByID(Integer.parseInt(query));
+        model.addAttribute("Publicacion", publication);
+        model.addAttribute("Autores", publicationAuthorService.authorByPublication(publication));
+        model.addAttribute("Collections", publicationCollectionService.collectionByPublication(publication));
+        model.addAttribute("Species", publicationSpeciesService.speciesByPublication(publication));
+        return "Updating";
+    }
+
+    /*  Método para actualizar la información de una publicación
+    recibe la información relacionada de una publicación y un
+    objeto de tipo "Model", devuelve un String.
+     */
+    @Transactional
+    @PostMapping("/publicationUpdated")
+    public String updatePublication(@RequestParam("publicationId") int id,
+                                    @RequestParam("title") String title,
+                                    @RequestParam("authors") List<String> authorsList,
+                                    @RequestParam("publicationdate") String publicationdate,
+                                    @RequestParam("species") List<String> speciesList,
+                                    @RequestParam("publisher") String publisher,
+                                    @RequestParam("doi") String doi,
+                                    @RequestParam("isbn") String isbn,
+                                    @RequestParam("country") String country,
+                                    @RequestParam("institution") int institution,
+                                    @RequestParam("collections") List<String> collectionsList,
+                                    Model publicaciones){
+        // Lógica para actualizar la publicación
+        Publication publication = publicationService.getByID(id);
+        if (!title.isEmpty()) publication.setTitle(title); // revisa si el campo no está vacio
+        if (!authorsList.isEmpty()) {
+            publicationAuthorService.deletePublicationAuthor(publication);
+            for (String authorsID : authorsList) { // se recorre en los autores
+                if(!authorsID.isEmpty()) {
+                    Author author = authorService.getAuthorByIdCard(Integer.parseInt(authorsID)).get();
+                    publicationAuthorService.addNewPublicationAuthor(publication, author);
+                }
+            }
+        }
+        if(!publicationdate.isEmpty()) publication.setPostdate(LocalDate.parse(publicationdate));
+        if (!speciesList.isEmpty()) {
+            publicationSpeciesService.deletePublicationSpecies(publication);
+            for (String speciesName : speciesList) {
+                if(!speciesName.isEmpty()) {
+                    Species species = speciesService.findByName(speciesName).getFirst();
+                    publicationSpeciesService.addNewPublicationSpecies(publication, species);
+                }
+            }
+        }
+        if(!publisher.isEmpty()) publication.setPublisherMagazine(publisher);
+        if(!doi.isEmpty()) publication.setDoi(doi);
+        if(!isbn.isEmpty()) publication.setIsbn(isbn);
+        if(!country.isEmpty()) publication.setPublicationcountry(country);
+        if(institution != 0) publication.setInstitution(institutionService.getByID(institution).get()); // se verifica que si exista institución
+        if (!collectionsList.isEmpty()) {
+            publicationCollectionService.deletePublicationCollection(publication);
+            for (String collectionsName : collectionsList) {
+                if(!collectionsName.isEmpty()) {
+                    Collection collection = collectionService.getCollectionByName(collectionsName).get();
+                    publicationCollectionService.addNewPublicationCollection(publication, collection);
+                }
+            }
+        }
+        publicaciones.addAttribute("Publications", publicationService.getAllPublications()); // se pasa la info al modelo
+        return "PublicationUpdated";
+    }
+
+    /* Método para buscar publicaciones por especie, recibre un string
+    que representa el nombre científico de la especie y un objeto de tipo
+    "Model" y devuelve un String. */
+    @GetMapping("/bySpecies")
+    public  String getPublicationBySpecies(@RequestParam("query") String query, Model model) {
+        Species species = speciesService.findByName(query).getFirst();
+        model.addAttribute("publicaciones", publicationSpeciesService.getPublicationBySpecies(species));
+        return "PublicationSpecies";
+    }
 }

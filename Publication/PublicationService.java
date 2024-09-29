@@ -36,19 +36,8 @@ public class PublicationService {
         publicationRepository.deleteById(id);
     }
 
-    @Transactional
-    public void updatePublicationTitle(Integer id, String Title){
-        Publication publication = publicationRepository.findById(id).orElseThrow(()->new IllegalStateException("No existe la publicación brindada."));
-        publication.setTitle(Title);
-    }
-
-    @Transactional
-    public void updatePublicationCountry(Integer id, String country) {
-        Publication publication = publicationRepository.findById(id).orElseThrow(() -> new IllegalStateException("No existe la publicación brindada."));
-        publication.setPublicationcountry(country);
-        publicationRepository.save(publication); // Guardar los cambios en la base de datos
-    }
-
+    /* Método para obtener una publicacion por su id, recibe un int que
+    representa el int y devuelve un objeto de tipo "Publication". */
     public Publication getByID(int id){
         return publicationRepository.findById(id).get();
     }
@@ -57,7 +46,7 @@ public class PublicationService {
     que representa el título y devuelve una lista de objetos de tipo
     "Publication". */
     public List<Publication> getByTitle(String title){
-        return publicationRepository.findByTitleLike(title);
+        return publicationRepository.findByTitleLikeIgnoreCase(title);
     }
 
 }

@@ -1,14 +1,18 @@
 package com.example.demo.Author;
+
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "author")
 public class Author {
     //atributos de la tabla "Author"
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idAuthor;
-
     private int idCard;
     private String firstName;
     private String secondName;

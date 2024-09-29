@@ -19,22 +19,7 @@ public class PublicationSpeciesId implements Serializable {
         this.species = species;
     }
 
-    public int getPublication() {
-        return publication;
-    }
-
-    public void setPublication(int publication) {
-        this.publication = publication;
-    }
-
-    public int getSpecies() {
-        return species;
-    }
-
-    public void setSpecies(int species) {
-        this.species = species;
-    }
-
+    // método para verificar que el id sea único
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

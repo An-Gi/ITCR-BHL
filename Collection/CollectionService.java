@@ -3,6 +3,7 @@ package com.example.demo.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.*;
+
 @Service
 public class CollectionService {
 
@@ -16,11 +17,9 @@ public class CollectionService {
         return collectionRepository.findAll();
     }
 
-    /*public Collection getCollectionById(Long id){
-        Optional<Collection> collectionOpt = collectionRepository.findById(id);
-        return collectionOpt.orElse(null);
-    }*/
-
+    /* Método para obtener una colección por el id, recibe
+    un int que representa el id de la colección y devuelve un
+    objeto de tipo "Collection" si es que se encuentra */
     public Optional<Collection> getCollectionById(Long id){
         return collectionRepository.findById(id);
     }

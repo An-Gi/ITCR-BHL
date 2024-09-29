@@ -1,12 +1,11 @@
 package com.example.demo.Publication_Species;
 
-import com.example.demo.Author.Author;
-import com.example.demo.Publication_Author.PublicationAuthor;
 import com.example.demo.Species.Species;
 import com.example.demo.Publication.Publication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.*;
+
 @Service
 public class PublicationSpeciesService {
 

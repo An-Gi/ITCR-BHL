@@ -11,14 +11,4 @@ public class MainMenuController {
         return "MainMenu";
     }
 
-    @GetMapping("/Collections")
-    public String showCollections() {
-        return "Collections";
-    }
-
-    @GetMapping("/error")
-    public String show404() {
-        return "index";
-    }
-
 }
