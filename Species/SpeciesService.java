@@ -14,7 +14,7 @@ public class SpeciesService {
     recibe un String que representa el nombre y devuelve una
     lista de objetos de tipo "Species". */
     public List<Species> findByName(String name) {
-        return speciesRepository.findByNameIgnoreCase(name);
+        return speciesRepository.findByNameLikeIgnoreCase(name);
     }
 
 }

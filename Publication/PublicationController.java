@@ -4,10 +4,13 @@ import com.example.demo.Author.Author;
 import com.example.demo.Author.AuthorService;
 import com.example.demo.Collection.Collection;
 import com.example.demo.Collection.CollectionService;
+import com.example.demo.Common_Name.CommonName;
+import com.example.demo.Common_Name.CommonNameService;
 import com.example.demo.Institution.Institution;
 import com.example.demo.Institution.InstitutionService;
 import com.example.demo.Publication_Author.PublicationAuthorService;
 import com.example.demo.Publication_Collection.PublicationCollectionService;
+import com.example.demo.Publication_Species.PublicationSpecies;
 import com.example.demo.Publication_Species.PublicationSpeciesService;
 import com.example.demo.Species.Species;
 import com.example.demo.Species.SpeciesService;
@@ -17,7 +20,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/publications")
@@ -38,14 +44,63 @@ public class PublicationController {
     @Autowired
     private PublicationSpeciesService publicationSpeciesService;
     @Autowired
+    private CommonNameService commonNameService;
+    @Autowired
     private InstitutionService institutionService;
+
+    /* Método para mostrar todas las publicaciones.*/
+    @GetMapping
+    public String getAllPublications(Model model) {
+        model.addAttribute("Publications", publicationService.getAllPublications());
+        return "Publications";
+    }
+
+    /* Método para obtener las publicaciones por medio de su título,
+    recibe un String que representa el título y un objeto de tipo "Model",
+    devuelve un String. */
+    @GetMapping("/byTitle")
+    public String getPublicationsByTitle(@RequestParam("query") String query, Model model) {
+        model.addAttribute("Publications", publicationService.getByTitle(query));
+        return "PublicationByTitle";
+    }
+
+    /* Método para mostrar una publicación por su id, recibe un Integer que
+    representa como el id y un objeto de tipo "Model, devuelve un String." */
+    @GetMapping("/{idPost}")
+    public String showPublication(@PathVariable("idPost") Integer id, Model model) {
+        Publication publication = publicationService.getByID(id); //se busca una publicación con su id
+        model.addAttribute("Publicacion", publication); // se pasa la info al modelo
+        model.addAttribute("Autores", publicationAuthorService.authorByPublication(publication));
+        model.addAttribute("Collections", publicationCollectionService.collectionByPublication(publication));
+        List<CommonName> commonNameList = new ArrayList<>();
+        for(PublicationSpecies species : publicationSpeciesService.speciesByPublication(publication)){
+            commonNameList.add(commonNameService.getCommonNameBySpecies(species.getSpecies()));
+        }
+        model.addAttribute("NombresComunes", commonNameList);
+        return "Publication";
+    }
+
+    /* Método para buscar publicaciones por especie, recibe un string
+    que representa el nombre científico de la especie y un objeto de tipo
+    "Model" y devuelve un String. */
+    @GetMapping("/bySpecies")
+    public  String getPublicationBySpecies(@RequestParam("query") String query, Model model) {
+        Map<Species, List<PublicationSpecies>> publicationsBySpecies = new HashMap<>();
+        List<Species> speciesList = speciesService.findByName(query);
+        model.addAttribute("Species", speciesList);
+        for(Species species : speciesList){
+            publicationsBySpecies.put(species, publicationSpeciesService.getPublicationBySpecies(species));
+        }
+        model.addAttribute("Publicaciones", publicationsBySpecies);
+        return "PublicationsBySpecies";
+    }
 
     /* Método para redirigir al usuario si desea agregar
     una publicación, no recibe ningún parámetro y devuelve
     un String */
     @GetMapping("/addingData")
     public String requestData(){
-        return "InsertData";
+        return "InsertingData";
     }
 
     /* Método para agregar una publicación, recibe como
@@ -82,13 +137,6 @@ public class PublicationController {
         return "PublicationAdded";
     }
 
-    /* Método para mostrar todas las publicaciones.*/
-    @GetMapping
-    public String getAllPublications(Model model) {
-        model.addAttribute("Publications", publicationService.getAllPublications());
-        return "allPublications";
-    }
-
     /* Método para eliminar una publicación, recibe un String que
      representa el id de la publicación y devuelve un String */
     @Transactional
@@ -104,27 +152,6 @@ public class PublicationController {
         return "PublicationDeleted";
     }
 
-    /* Método para obtener las publicaciones por medio de su título,
-    recibe un String que representa el título y un objeto de tipo "Model",
-    devuelve un String. */
-    @GetMapping("/byTitle")
-    public String getPublicationsByTitle(@RequestParam("query") String query, Model model) {
-        model.addAttribute("Publications", publicationService.getByTitle(query));
-        return "PublicationSearch";
-    }
-
-    /* Método para mostrar una publicación por su id, recibe un Integer que
-    representa como el id y un objeto de tipo "Model, devuelve un String."
-     */
-    @GetMapping("/{idPost}")
-    public String showPublication(@PathVariable("idPost") Integer id, Model model) {
-        Publication publication = publicationService.getByID(id); //se busca una publicación con su id
-        model.addAttribute("Publicacion", publication); // se pasa la info al modelo
-        model.addAttribute("Autores", publicationAuthorService.authorByPublication(publication));
-        model.addAttribute("Collections", publicationCollectionService.collectionByPublication(publication));
-        model.addAttribute("Species", publicationSpeciesService.speciesByPublication(publication));
-        return "Publication";
-    }
     /* Método para redirigir al usuario si desea editar
     una publicación,recibe un string que
     representa el id de la publicación y un
@@ -136,7 +163,7 @@ public class PublicationController {
         model.addAttribute("Autores", publicationAuthorService.authorByPublication(publication));
         model.addAttribute("Collections", publicationCollectionService.collectionByPublication(publication));
         model.addAttribute("Species", publicationSpeciesService.speciesByPublication(publication));
-        return "Updating";
+        return "UpdatingData";
     }
 
     /*  Método para actualizar la información de una publicación
@@ -195,15 +222,5 @@ public class PublicationController {
         }
         publicaciones.addAttribute("Publications", publicationService.getAllPublications()); // se pasa la info al modelo
         return "PublicationUpdated";
-    }
-
-    /* Método para buscar publicaciones por especie, recibre un string
-    que representa el nombre científico de la especie y un objeto de tipo
-    "Model" y devuelve un String. */
-    @GetMapping("/bySpecies")
-    public  String getPublicationBySpecies(@RequestParam("query") String query, Model model) {
-        Species species = speciesService.findByName(query).getFirst();
-        model.addAttribute("publicaciones", publicationSpeciesService.getPublicationBySpecies(species));
-        return "PublicationSpecies";
     }
 }

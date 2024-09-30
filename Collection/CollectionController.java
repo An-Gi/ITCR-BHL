@@ -35,7 +35,7 @@ public class CollectionController {
         Collection collection = collectionService.getCollectionById(id).get();
         List<PublicationCollection> publicaciones = publicationCollectionService.publicationByCollection(collection);
         conjuntoDatos.addAttribute("PublicationCollection", publicaciones); // se le pasa los datos al modelo
-        return "PublicationsCollection";
+        return "PublicationsByCollection";
     }
 
 
