@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Publications By Species</title>
+    <style>
+        .containerBuscar {
+            display: flex;
+            margin-top: 50px;
+            align-items: center;
+        }
+
+        h1 {
+            position: absolute;
+            top: 0px;
+            left: 10px;
+
+        }
+        h2 {
+            position: absolute;
+            top: 50px;
+            left: 10px;
+        }
+
+        h3 {
+            color: #ffffff;
+            align-content: end;
+            margin-top: 500px;
+            margin-bottom: 15px;
+        }
+
+        a {
+            color: #ffffff;
+        }
+
+        .containerPS {
+            display: flex;
+            margin-top: 25px;
+            align-items: center;
+        }
+
+        .containerP {
+            margin-top: 25px;
+            padding: 25px;
+            width: 350px;
+            height: auto;
+            background-color: #063b44;
+        }
+
+        .searchBar {
+            color: #000000;
+            margin-left: 35px;
+            margin-right: 15px;
+        }
+    </style>
+</head>
+
+<link rel="stylesheet" href="/css/GoBackStyle.css">
+<link rel="stylesheet" href="/css/BuscadorStyle.css">
+<link rel="stylesheet" href="/css/BackgroundStyle.css">
+
+<body>
+<h1>BHL</h1>
+<h2>Online species repository 🦎</h2>
+
+<div class="containerBuscar">
+
+    <button class="goBack">
+        <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1024 1024"><path d="M874.690416 495.52477c0 11.2973-9.168824 20.466124-20.466124 20.466124l-604.773963 0 188.083679 188.083679c7.992021 7.992021 7.992021 20.947078 0 28.939099-4.001127 3.990894-9.240455 5.996574-14.46955 5.996574-5.239328 0-10.478655-1.995447-14.479783-5.996574l-223.00912-223.00912c-3.837398-3.837398-5.996574-9.046027-5.996574-14.46955 0-5.433756 2.159176-10.632151 5.996574-14.46955l223.019353-223.029586c7.992021-7.992021 20.957311-7.992021 28.949332 0 7.992021 8.002254 7.992021 20.957311 0 28.949332l-188.073446 188.073446 604.753497 0C865.521592 475.058646 874.690416 484.217237 874.690416 495.52477z"></path></svg>
+        <span>Back</span>
+    </button>
+
+    <form action="/publications/bySpecies" method="GET">
+        <div class="group">
+            <label class="searchBar" for="search">Search by Scientific Name:</label>
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+                <g>
+                    <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
+                </g>
+            </svg>
+            <label>
+                <input placeholder="Search for species..." type="search" name="query" class="input" id="search">
+            </label>
+        </div>
+    </form>
+</div>
+<div class="containerPS">
+    <ul class="publication-list" th:each="species: ${Species}">
+        <ul class="publication-list" th:each="publication: ${Publicaciones.get(species)}">
+            <h4 th:text="${species.getName()}"></h4>
+            <li class="publication-item" >
+                <div class="containerP">
+                    <a th:href="@{/publications/{id}(id=${publication.getPublication().getIdPost()})}" class="btn-collections">
+                        <h4 th:text="${publication.getPublication().getTitle()}"></h4>
+                        <p th:text="'Date of publication: ' + ${publication.getPublication().getPostdate()}"></p>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </ul>
+</div>
+</body>
+<script>
+    document.querySelector('button').addEventListener('click', function() {
+        window.location.href = '/Menu';
+    });
+</script>
+<h3>Copyright ©2024 C-Bas & An-G</h3>
+</html>
