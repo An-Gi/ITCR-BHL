@@ -15,5 +15,8 @@ public class InstitutionService {
     public Optional<Institution> getByID(int id){
         return institutionRepository.findById(id);
     }
+
+    /* Método para obtener todas las instituciones */
+    public List<Institution> getAllInstitutions(){return institutionRepository.findAll();}
 }
 

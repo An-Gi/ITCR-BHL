@@ -15,4 +15,9 @@ public class AuthorService {
     public Optional<Author> getAuthorByIdCard(int idCard){
         return authorRepository.findByIdCard(idCard);
     }
+
+    /* Método para obtener todos los autores */
+    public List<Author> getAllAuthors(){
+        return authorRepository.findAll();
+    }
 }

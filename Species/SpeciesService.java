@@ -17,4 +17,14 @@ public class SpeciesService {
         return speciesRepository.findByNameLikeIgnoreCase(name);
     }
 
+    /* Método para obtener una especie por su id, recibe como
+    parámetro un int que representa su id y devuelve un objeto
+    de tipo "Species" */
+    public Species getByID(int id){ return speciesRepository.findById(id).get(); }
+
+    /* Método para obtener todas las especie, no recibe nada
+     como entrada y devuelve una Lista de objetos de tipo
+     "Species" */
+    public List<Species> getAllSpecies(){return speciesRepository.findAll();}
+
 }

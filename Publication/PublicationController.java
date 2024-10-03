@@ -99,7 +99,11 @@ public class PublicationController {
     una publicación, no recibe ningún parámetro y devuelve
     un String */
     @GetMapping("/addingData")
-    public String requestData(){
+    public String requestData(Model datos){
+        datos.addAttribute("Collections", collectionService.getAllCollections());
+        datos.addAttribute("Authors", authorService.getAllAuthors());
+        datos.addAttribute("Species", speciesService.getAllSpecies());
+        datos.addAttribute("Institutions", institutionService.getAllInstitutions());
         return "InsertingData";
     }
 
@@ -108,32 +112,57 @@ public class PublicationController {
      y devuelve un String*/
     @PostMapping("/publicationAdded")
     public String addPublication(@RequestParam("title") String title,
-                                 @RequestParam("authors") List<String> authors,
+                                 @RequestParam("autores") List<String> authors,
                                  @RequestParam("publicationdate") String publicationdate,
                                  @RequestParam("species") List<String> species,
                                  @RequestParam("publisher") String publisher,
                                  @RequestParam("doi") String doi,
                                  @RequestParam("isbn") String isbn,
                                  @RequestParam("country") String country,
-                                 @RequestParam("institution") int institution,
-                                 @RequestParam("collections") List<String> collections, Model publicaciones){
+                                 @RequestParam("institution") Integer institution,
+                                 @RequestParam("colecciones") List<String> collections, Model errores){
         // Lógica para almacenar la publicación
+        List<Author> authorsList = new ArrayList<>();
+        for(String authorsID : authors) {
+            if (!authorsID.isEmpty()){
+                Author author = authorService.getAuthorByIdCard(Integer.parseInt(authorsID)).get();
+                authorsList.add(author);
+            }
+        }
+        List<Species> speciesList = new ArrayList<>();
+        for(String speciesID : species){
+            if (!speciesID.isEmpty()) {
+                Species speciesAssociated = speciesService.getByID(Integer.parseInt(speciesID));
+                speciesList.add(speciesAssociated);
+            }
+        }
+        List<Collection> collectionsList = new ArrayList<>();
+        for(String collectionID : collections){
+            if(!collectionID.isEmpty()) {
+                Collection collection = collectionService.getCollectionById(Long.valueOf(collectionID)).get();
+                collectionsList.add(collection);
+            }
+        }
+        if(authorsList.isEmpty()||speciesList.isEmpty()||collectionsList.isEmpty()){
+            List<String> errorList = new ArrayList<>();
+            if(authorsList.isEmpty()) errorList.add("You have to select at least one author for the publication");
+            if(speciesList.isEmpty()) errorList.add("You have to select at least one species for the publication");
+            if(collectionsList.isEmpty()) errorList.add("You have to select at least one collection for the publication");
+            errores.addAttribute("Mensajes", errorList);
+            return "InsertFailed";
+        }
         Institution asociateInstitution = institutionService.getByID(institution).get();
         Publication newPublication = new Publication(title, publicationdate, publisher, doi, isbn, country, asociateInstitution);
         publicationService.addNewPublication(newPublication);
-        for(String collectionName : collections){
-            Collection collection = collectionService.getCollectionByName(collectionName).get();
-            publicationCollectionService.addNewPublicationCollection(newPublication, collection);
-        }
-        for(String authorsID : authors){
-            Author author = authorService.getAuthorByIdCard(Integer.parseInt(authorsID)).get();
+        for(Author author : authorsList) {
             publicationAuthorService.addNewPublicationAuthor(newPublication, author);
         }
-        for(String speciesName : species){
-            Species speciesN = speciesService.findByName(speciesName).getFirst();
-            publicationSpeciesService.addNewPublicationSpecies(newPublication, speciesN);
+        for(Species speciesAssociated : speciesList){
+            publicationSpeciesService.addNewPublicationSpecies(newPublication, speciesAssociated);
         }
-        publicaciones.addAttribute("Publications", publicationService.getAllPublications());
+        for(Collection collection : collectionsList){
+            publicationCollectionService.addNewPublicationCollection(newPublication, collection);
+        }
         return "PublicationAdded";
     }
 
@@ -160,9 +189,14 @@ public class PublicationController {
     public String requestNewData(@RequestParam(value = "query", required = false, defaultValue = "") String query, Model model){
         Publication publication = publicationService.getByID(Integer.parseInt(query));
         model.addAttribute("Publicacion", publication);
-        model.addAttribute("Autores", publicationAuthorService.authorByPublication(publication));
-        model.addAttribute("Collections", publicationCollectionService.collectionByPublication(publication));
-        model.addAttribute("Species", publicationSpeciesService.speciesByPublication(publication));
+        model.addAttribute("AutoresAsociados", publicationAuthorService.authorByPublication(publication));
+        model.addAttribute("Autores", authorService.getAllAuthors());
+        model.addAttribute("CollectionsAssociated", publicationCollectionService.collectionByPublication(publication));
+        model.addAttribute("Collections", collectionService.getAllCollections());
+        model.addAttribute("SpeciesAssociated", publicationSpeciesService.speciesByPublication(publication));
+        model.addAttribute("Species", speciesService.getAllSpecies());
+        model.addAttribute("Institutions", institutionService.getAllInstitutions());
+        model.addAttribute("Institution", publication.getInstitution());
         return "UpdatingData";
     }
 
@@ -174,34 +208,35 @@ public class PublicationController {
     @PostMapping("/publicationUpdated")
     public String updatePublication(@RequestParam("publicationId") int id,
                                     @RequestParam("title") String title,
-                                    @RequestParam("authors") List<String> authorsList,
+                                    @RequestParam("autores") List<String> authorsList,
                                     @RequestParam("publicationdate") String publicationdate,
-                                    @RequestParam("species") List<String> speciesList,
+                                    @RequestParam("especies") List<String> speciesList,
                                     @RequestParam("publisher") String publisher,
                                     @RequestParam("doi") String doi,
                                     @RequestParam("isbn") String isbn,
                                     @RequestParam("country") String country,
-                                    @RequestParam("institution") int institution,
-                                    @RequestParam("collections") List<String> collectionsList,
-                                    Model publicaciones){
+                                    @RequestParam("institution") String institution,
+                                    @RequestParam("colecciones") List<String> collectionsList){
         // Lógica para actualizar la publicación
         Publication publication = publicationService.getByID(id);
         if (!title.isEmpty()) publication.setTitle(title); // revisa si el campo no está vacio
         if (!authorsList.isEmpty()) {
-            publicationAuthorService.deletePublicationAuthor(publication);
+            boolean eliminados = false;
             for (String authorsID : authorsList) { // se recorre en los autores
                 if(!authorsID.isEmpty()) {
+                    if(!eliminados) publicationAuthorService.deletePublicationAuthor(publication);
                     Author author = authorService.getAuthorByIdCard(Integer.parseInt(authorsID)).get();
                     publicationAuthorService.addNewPublicationAuthor(publication, author);
+                    eliminados = true;
                 }
             }
         }
         if(!publicationdate.isEmpty()) publication.setPostdate(LocalDate.parse(publicationdate));
         if (!speciesList.isEmpty()) {
             publicationSpeciesService.deletePublicationSpecies(publication);
-            for (String speciesName : speciesList) {
-                if(!speciesName.isEmpty()) {
-                    Species species = speciesService.findByName(speciesName).getFirst();
+            for (String speciesID : speciesList) {
+                if(!speciesID.isEmpty()) {
+                    Species species = speciesService.getByID(Integer.parseInt(speciesID));
                     publicationSpeciesService.addNewPublicationSpecies(publication, species);
                 }
             }
@@ -210,17 +245,16 @@ public class PublicationController {
         if(!doi.isEmpty()) publication.setDoi(doi);
         if(!isbn.isEmpty()) publication.setIsbn(isbn);
         if(!country.isEmpty()) publication.setPublicationcountry(country);
-        if(institution != 0) publication.setInstitution(institutionService.getByID(institution).get()); // se verifica que si exista institución
+        publication.setInstitution(institutionService.getByID(Integer.parseInt(institution)).get()); // se verifica que si exista institución
         if (!collectionsList.isEmpty()) {
             publicationCollectionService.deletePublicationCollection(publication);
-            for (String collectionsName : collectionsList) {
-                if(!collectionsName.isEmpty()) {
-                    Collection collection = collectionService.getCollectionByName(collectionsName).get();
+            for (String collectionsID : collectionsList) {
+                if(!collectionsID.isEmpty()) {
+                    Collection collection = collectionService.getCollectionById(Long.valueOf(collectionsID)).get();
                     publicationCollectionService.addNewPublicationCollection(publication, collection);
                 }
             }
         }
-        publicaciones.addAttribute("Publications", publicationService.getAllPublications()); // se pasa la info al modelo
         return "PublicationUpdated";
     }
 }
