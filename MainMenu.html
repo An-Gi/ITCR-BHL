@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Menu</title>
+    <style>
+
+        .container {
+            display: flex;
+            margin-top: 50px;
+            align-items: center;
+        }
+
+        .titleContainer {
+            margin-top: 250px
+        }
+
+        h1 {
+            margin-top: 5px;
+        }
+
+        h3 {
+            color: #ffffff;
+            margin-top: 500px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            margin-left: 20px;
+        }
+
+        .searchBar {
+            color: #ffffff;
+            margin-left: 35px;
+        }
+    </style>
+</head>
+<link rel="stylesheet" href="/css/Publication&CollectionStyle.css">
+<link rel="stylesheet" href="/css/BackgroundStyle.css">
+<link rel="stylesheet" href="/css/BuscadorStyle.css">
+<body>
+<div class="titleContainer">
+    <h1>BHL</h1>
+</div>
+<h1>Online species repository 🦎</h1>
+
+<div class="container">
+    <button class="btn-12" id="collections-btn"><span>Collections</span></button>
+    <button class="btn-12" id="publications-btn"><span>Publications</span></button>
+    <form action="/publications/bySpecies" method="GET">
+        <label class="searchBar" for="search">Search by Scientific Name:</label>
+        <div class="group">
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+                <g>
+                    <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
+                </g>
+            </svg>
+            <input placeholder="Search for species..." type="search" name="query" class="input" id="search">
+        </div>
+    </form>
+</div>
+
+<script>
+    document.getElementById('collections-btn').addEventListener('click', function() {
+        window.location.href = '/collections'; // Redirige a la página de Collections
+    });
+
+    document.getElementById('publications-btn').addEventListener('click', function() {
+        window.location.href = '/publications'; // Redirige a la página de Publications
+    });
+</script>
+
+<h3>Copyright ©2024 C-Bas & An-G</h3>
+
+</body>
+</html>

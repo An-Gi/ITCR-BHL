@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Updating publication info</title>
+    <style>
+
+        .containerBuscar {
+            display: flex;
+            margin-top: 50px;
+            align-items: center;
+        }
+
+        body {
+            text-align: left;
+            margin: 0;
+            position: relative;
+            min-height: 50vh;
+        }
+
+        h1.nombre {
+            position: absolute;
+            top: 0px;
+            left: 10px;
+
+        }
+        h2 {
+            position: absolute;
+            top: 50px;
+            left: 10px;
+        }
+        h3 {
+            color: #ffffff;
+            align-content: end;
+            margin-top: 300px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            color: #e0dfdf;
+        }
+
+        p {
+            color: #e0dfdf;
+        }
+
+        label {
+            color: #e0dfdf;
+        }
+
+        .containerP {
+            margin-top: 25px;
+            padding: 25px;
+            width: 500px;
+            height: auto;
+            background-color: #063b44;
+        }
+    </style>
+</head>
+<link rel="stylesheet" href="/css/CollectionStyle.css">
+<link rel="stylesheet" href="/css/GoBackStyle.css">
+<link rel="stylesheet" href="/css/DeleteStyle.css">
+<link rel="stylesheet" href="/css/InsertDataStyle.css">
+<link rel="stylesheet" href="/css/BackgroundStyle.css">
+
+<body>
+<h1 class="nombre">BHL</h1>
+
+<h2>Online species repository 🦎</h2>
+
+<div class="containerBuscar">
+    <button class="goBack" id="goBack-btn">
+        <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1024 1024"><path d="M874.690416 495.52477c0 11.2973-9.168824 20.466124-20.466124 20.466124l-604.773963 0 188.083679 188.083679c7.992021 7.992021 7.992021 20.947078 0 28.939099-4.001127 3.990894-9.240455 5.996574-14.46955 5.996574-5.239328 0-10.478655-1.995447-14.479783-5.996574l-223.00912-223.00912c-3.837398-3.837398-5.996574-9.046027-5.996574-14.46955 0-5.433756 2.159176-10.632151 5.996574-14.46955l223.019353-223.029586c7.992021-7.992021 20.957311-7.992021 28.949332 0 7.992021 8.002254 7.992021 20.957311 0 28.949332l-188.073446 188.073446 604.753497 0C865.521592 475.058646 874.690416 484.217237 874.690416 495.52477z"></path></svg>
+        <span>Back</span>
+    </button>
+</div>
+<h1>Update the publication information</h1>
+
+<div class="containerP">
+    <form action="/publications/publicationUpdated" method="post">
+
+        <input type="hidden" id="publicationId" name="publicationId" th:value="${Publicacion.getIdPost()}">
+
+        <div class="coolinput">
+            <label for="title" class="text">Title:</label>
+            <input type="text" id="title" th:value="${Publicacion.getTitle()}" name="title" class="input" ><br>
+        </div>
+
+        <div class="coolinput" id="authors">
+            <label for="authors" class="text">Author ID Card:</label>
+            <div th:each="author : ${Autores}">
+                <input type="number" th:value="${author.getAuthor().getIdCard()}" name="authors" class="input" ><br>
+            </div>
+        </div>
+
+        <button type="button" id="addAuthor">Asociate more authors</button><br><br>
+
+        <div class="coolinput">
+            <label for="publicationdate" class="text">Publication Date:</label>
+            <input type="date" id="publicationdate" th:value="${Publicacion.getPostdate()}" name="publicationdate" class="input" ><br>
+        </div>
+
+        <div class="coolinput" id="species">
+            <label for="species" class="text">Species name:</label>
+            <div th:each="especie : ${Species}">
+                <input type="text" th:value="${especie.getSpecies().getName()}" name="species" class="input" ><br>
+            </div>
+        </div>
+
+        <button type="button" id="addSpecies">Asociate more species</button><br><br>
+
+        <div class="coolinput">
+            <label for="publisher" class="text">Publisher magazine:</label>
+            <input type="text" id="publisher" th:value="${Publicacion.getPublisherMagazine()}" name="publisher" class="input"><br>
+        </div>
+
+        <div class="coolinput">
+            <label for="doi" class="text">DOI:</label>
+            <input type="text" id="doi" th:value="${Publicacion.getDoi()}" name="doi" class="input"><br>
+        </div>
+
+        <div class="coolinput">
+            <label for="isbn" class="text">ISBN:</label>
+            <input type="text" id="isbn" th:value="${Publicacion.getIsbn()}" name="isbn" class="input"><br>
+        </div>
+
+        <div class="coolinput">
+            <label for="country" class="text">Publication Country:</label>
+            <input type="text" id="country" th:value="${Publicacion.getPublicationcountry()}" name="country" class="input"><br>
+        </div>
+
+        <div class="coolinput">
+            <label for="institution" class="text">Institution ID:</label>
+            <input type="number" id="institution" th:value="${Publicacion.getInstitution().getID_Institution()}" name="institution" class="input" ><br>
+        </div>
+
+        <div class="coolinput" id="collections">
+            <label for="collections">Collection:</label>
+            <div th:each="colecciones : ${Collections}">
+                <input type="text" th:value="${colecciones.getCollection().getName()}" name="collections" class="input"><br>
+            </div>
+        </div>
+
+        <button type="button" id="addCollections">Asociate with more collections</button><br><br>
+
+        <button type="submit">Submit publication</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('goBack-btn').addEventListener('click', function() {
+        window.location.href = '/publications';
+    });
+</script>
+
+<script>
+    document.getElementById('addCollections').addEventListener('click', function() {
+        var collectionDiv = document.getElementById('collections');
+        var newCollectionInput = document.createElement('input');
+        newCollectionInput.setAttribute('type', 'text');
+        newCollectionInput.setAttribute('name', 'collections'); // Nombre igual para todas las colecciones
+        newCollectionInput.setAttribute('class', 'input');
+        collectionDiv.appendChild(newCollectionInput);
+        collectionDiv.appendChild(document.createElement('br'));
+    });
+</script>
+
+<script>
+    document.getElementById('addAuthor').addEventListener('click', function() {
+        var authorDiv = document.getElementById('authors');
+        var newAuthorInput = document.createElement('input');
+        newAuthorInput.setAttribute('type', 'number');
+        newAuthorInput.setAttribute('name', 'authors'); // Nombre igual para todos los autores
+        newAuthorInput.setAttribute('class', 'input');
+        authorDiv.appendChild(newAuthorInput);
+        authorDiv.appendChild(document.createElement('br'));
+    });
+</script>
+
+<script>
+    document.getElementById('addSpecies').addEventListener('click', function() {
+        var speciesDiv = document.getElementById('species');
+        var newSpeciesInput = document.createElement('input');
+        newSpeciesInput.setAttribute('type', 'text');
+        newSpeciesInput.setAttribute('name', 'species'); // Nombre igual para todas las especies
+        newSpeciesInput.setAttribute('class', 'input');
+        speciesDiv.appendChild(newSpeciesInput);
+        speciesDiv.appendChild(document.createElement('br'));
+    });
+</script>
+
+<h3>Copyright ©2024 C-Bas & An-G</h3>
+</body>
+</html>
