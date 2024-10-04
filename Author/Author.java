@@ -23,4 +23,3 @@ public class Author {
     private String countryOfHabitation;
     private String address;
 }
-
