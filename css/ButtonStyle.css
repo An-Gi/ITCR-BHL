@@ -1,0 +1,52 @@
+button.associate {
+    display: inline-block;
+    width: auto;
+    height: 25px;
+    border-radius: 10px;
+    font-size: 1px;
+    border: 1px solid #ffffff;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s ease-in;
+    z-index: 1;
+}
+
+button.associate::before,
+button.associate::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 0;
+    height: 100%;
+    transform: skew(15deg);
+    transition: all 0.5s;
+    overflow: hidden;
+    z-index: -1;
+}
+
+button.associate::before {
+    left: -10px;
+    background: #063b44;
+}
+
+button.associate::after {
+    right: -10px;
+    background: #064431;
+}
+
+button.associate:hover::before,
+button.associate:hover::after {
+    width: 58%;
+}
+
+button.associate:hover span {
+    color: #64cbce;
+    transition: 0.3s;
+}
+
+button.associate span {
+    color: #315859;
+    font-size: 18px;
+    transition: all 0.3s ease-in;
+}
+

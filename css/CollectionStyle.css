@@ -1,0 +1,28 @@
+.collection-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px;
+}
+
+.btn-collection {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #4d941c;
+    color: #1b3608;
+    text-align: left;
+    text-decoration: none;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-collection:hover {
+    background-color: #3c7713;
+    transform: translateY(-3px);
+}
+
+
+
